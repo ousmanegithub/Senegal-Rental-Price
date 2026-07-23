@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+# Image du front Streamlit — build multi-stage, exécution non-root.
+# Contexte de build attendu : la racine du dépôt.
+#
+# Dépendances minimales (pas le package ML complet : le front n'appelle que
+# l'API HTTP). Garder ces versions synchronisées avec
+# `[project.optional-dependencies].frontend` de pyproject.toml.
+
+# ---------- Stage 1 : build des dépendances dans un venv isolé ----------
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir "streamlit>=1.33" "requests>=2.31"
+
+# ---------- Stage 2 : image d'exécution minimale ----------
+FROM python:3.11-slim AS runtime
+
+RUN useradd --create-home --uid 1000 --shell /usr/sbin/nologin appuser
+
+WORKDIR /app
+
+COPY --from=builder /opt/venv /opt/venv
+COPY frontend/ frontend/
+RUN chown -R appuser:appuser /app
+
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    API_URL=http://api:8000
+
+USER appuser
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "frontend/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

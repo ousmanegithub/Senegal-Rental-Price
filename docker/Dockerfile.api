@@ -1,0 +1,46 @@
+# syntax=docker/dockerfile:1
+# Image de l'API FastAPI — build multi-stage, exécution non-root.
+# Contexte de build attendu : la racine du dépôt (cf. docker-compose.yml / CI).
+
+# ---------- Stage 1 : build des dépendances dans un venv isolé ----------
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Seuls les fichiers nécessaires à `pip install .` (cache Docker efficace :
+# un changement dans src/ n'invalide pas la couche si pyproject.toml est stable).
+COPY pyproject.toml README.md ./
+COPY src/ src/
+COPY api/ api/
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir .
+
+# ---------- Stage 2 : image d'exécution minimale ----------
+FROM python:3.11-slim AS runtime
+
+RUN useradd --create-home --uid 1000 --shell /usr/sbin/nologin appuser
+
+WORKDIR /app
+
+COPY --from=builder /opt/venv /opt/venv
+COPY api/ api/
+COPY src/ src/
+
+# Répertoire du modèle : monté en volume par docker-compose, mais doit
+# exister et appartenir à l'utilisateur non-root dès la construction.
+RUN mkdir -p /app/models && chown -R appuser:appuser /app
+
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    API_MODEL_DIR=/app/models \
+    API_LOG_LEVEL=INFO
+
+USER appuser
+
+EXPOSE 8000
+
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

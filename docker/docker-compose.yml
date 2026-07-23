@@ -1,0 +1,51 @@
+services:
+  mlflow:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.mlflow
+    image: senegal-rental-mlflow:local
+    ports:
+      - "5000:5000"
+    volumes:
+      # Backend SQLite + artefacts, persistés côté hôte entre les redémarrages.
+      - ../mlflow-data:/mlflow-data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    image: senegal-rental-api:local
+    ports:
+      - "8000:8000"
+    volumes:
+      # Modèle entraîné localement (senegal-rental-train), monté en lecture
+      # seule : l'image ne contient jamais l'artefact, conformément au sujet.
+      - ../models:/app/models:ro
+    environment:
+      API_MODEL_DIR: /app/models
+      API_LOG_LEVEL: INFO
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    image: senegal-rental-frontend:local
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
