@@ -1,0 +1,5 @@
+name: ridge
+estimator: ridge          # baseline linéaire régularisée
+params:
+  alpha: 1.0
+  random_state: ${seed}

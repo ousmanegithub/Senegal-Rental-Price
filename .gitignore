@@ -1,0 +1,45 @@
+# Data (non versionnées, cf. sujet §2)
+# `data/raw/*` (pas `data/raw/`) : un dossier parent exclu empêche toute
+# ré-inclusion, même avec un `!`. Ce pattern garde `.gitkeep` versionné.
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Modèles sérialisés (non versionnés)
+models/*
+!models/.gitkeep
+
+# MLflow
+mlruns/
+mlartifacts/
+mlflow.db
+mlflow-data/
+
+# Sorties Hydra (horodatées, non versionnées)
+outputs/
+multirun/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Outils
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+.ipynb_checkpoints/

@@ -1,0 +1,59 @@
+# Configuration des données et du nettoyage (aucun chemin/seuil en dur dans le code)
+raw_path: data/raw/locations.csv
+processed_path: data/processed/clean.parquet
+sep: ";"
+encoding: utf-8-sig
+
+# Colonne cible
+target: prix_loyer_mensuel
+
+# Villes et types autorisés (alignés sur l'Enum de l'API). Les autres sont écartés.
+known_villes:
+  - Dakar
+  - Thiès
+known_types:
+  - appartement
+  - maison
+
+# Bornes de plausibilité du loyer mensuel (FCFA). En dehors -> annonce écartée.
+# 150 000 FCFA/mois est un plancher réaliste pour une location résidentielle ;
+# en-dessous on capte surtout des locaux commerciaux / erreurs de scraping.
+min_price: 150000
+max_price: 10000000
+
+# Bornes de surface plausibles (m2)
+min_surface: 9
+max_surface: 2000
+
+# Mots-clés du titre indiquant un bien NON résidentiel (à écarter)
+commercial_keywords:
+  - commercial
+  - bureau
+  - entrep
+  - local
+  - plateau de bureaux
+  - immeuble
+
+# Liste fermée des équipements reconnus -> un flag binaire par équipement
+known_equipements:
+  - piscine
+  - climatisation
+  - gardiennage
+  - parking
+  - jardin
+  - terrasse
+  - salle_de_sport
+  - wifi
+  - meuble
+
+# Quartiers considérés "premium" (prime au prix) -> feature quartier_premium
+premium_quartiers:
+  - almadies
+  - ngor
+  - point e
+  - mermoz
+  - fann
+  - plateau
+  - saly
+  - ngaparou
+  - somone
