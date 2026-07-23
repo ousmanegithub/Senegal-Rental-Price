@@ -1,7 +1,6 @@
 # Prédiction du prix des locations au Sénégal 🇸🇳
 
-<!-- Remplacez UTILISATEUR/DEPOT par le chemin réel de votre dépôt GitHub -->
-[![CI](https://github.com/UTILISATEUR/DEPOT/actions/workflows/ci.yml/badge.svg)](https://github.com/UTILISATEUR/DEPOT/actions/workflows/ci.yml)
+[![CI](https://github.com/ousmanegithub/Senegal-Rental-Price/actions/workflows/ci.yml/badge.svg)](https://github.com/ousmanegithub/Senegal-Rental-Price/actions/workflows/ci.yml)
 
 Service de prédiction du **loyer mensuel** d'un bien immobilier au Sénégal
 (Dakar, région de Thiès / Petite-Côte) à partir de ses caractéristiques :
