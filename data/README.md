@@ -3,9 +3,9 @@
 ## Provenance
 
 Jeu de données constitué par **scraping** d'annonces de location immobilière au
-Sénégal (usage strictement académique, dans le respect des conditions
-d'utilisation des sites concernés). Le fichier brut est `raw/locations.csv`
-(séparateur `;`, encodage UTF-8 avec BOM).
+Sénégal sur [NeoBien](https://neobien.com/) (usage strictement académique,
+dans le respect des conditions d'utilisation du site). Le fichier brut est
+`raw/locations.csv` (séparateur `;`, encodage UTF-8 avec BOM).
 
 > Les dossiers `raw/` et `processed/` ne sont **pas versionnés** (cf. `.gitignore`).
 
