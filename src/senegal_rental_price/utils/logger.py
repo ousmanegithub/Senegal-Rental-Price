@@ -24,12 +24,8 @@ _CONFIGURED: bool = False
 def _ensure_utf8_streams() -> None:
     """Force stdout/stderr en UTF-8 si la console ne l'est pas déjà.
 
-    Sur Windows, la console utilise par défaut un encodage historique (ex.
-    cp1252) qui ne sait pas encoder les emojis que MLflow >=3 imprime en fin
-    de run (ex. "🏃 View run..."). Sans ce correctif, l'exception lève hors
-    de ``with mlflow.start_run()`` et le run reste bloqué au statut RUNNING
-    côté serveur, alors que le tracking a pourtant réussi. No-op sur
-    Linux/macOS où l'encodage est déjà UTF-8.
+    Nécessaire sur Windows, dont la console n'encode pas nativement les
+    caractères que MLflow >=3 peut imprimer. No-op sur Linux/macOS.
     """
     for stream in (sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)

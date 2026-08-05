@@ -17,15 +17,10 @@ log_level: INFO
 
 # --- MLflow ---
 mlflow:
-  # URI du serveur de tracking MLflow (conteneur `docker/docker-compose.yml`,
-  # démarré avec `docker compose -f docker/docker-compose.yml up mlflow -d`).
-  # Le client parle en HTTP au serveur : le stockage (SQLite + artefacts) est
-  # géré côté conteneur, ce qui évite le bug MLflow 3.x sur Windows où un accès
-  # SQLite direct échoue si le chemin absolu du projet contient un espace.
-  #
-  # Si le serveur n'est pas démarré, le tracking est simplement ignoré (avec un
-  # avertissement) : l'entraînement et la sérialisation locale du modèle ne
-  # sont jamais bloqués (cf. `_track_mlflow` dans `models/train.py`).
+  # URI du serveur de tracking (conteneur `docker/docker-compose.yml`, service
+  # `mlflow`). Si le serveur n'est pas démarré, le tracking est simplement
+  # ignoré : l'entraînement et la sérialisation locale du modèle continuent
+  # normalement (cf. `_track_mlflow` dans `models/train.py`).
   # Repli 100% local sans Docker : mlflow.tracking_uri=sqlite:///mlflow.db
   tracking_uri: "http://localhost:5000"
   experiment_name: senegal-rental-price

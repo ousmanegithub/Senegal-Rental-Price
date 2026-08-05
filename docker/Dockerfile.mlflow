@@ -23,8 +23,7 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 
 # Stockage persistant (backend SQLite + artefacts), monté en volume par
-# docker-compose. Chemin conteneur fixe, sans espace : évite le bug Windows
-# rencontré avec un chemin hôte absolu (cf. conf/config.yaml).
+# docker-compose.
 RUN mkdir -p /mlflow-data && chown -R appuser:appuser /mlflow-data
 
 ENV PATH="/opt/venv/bin:$PATH" \
