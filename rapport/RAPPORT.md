@@ -1,7 +1,7 @@
 # Rapport de projet — Prédiction du prix des locations au Sénégal
 
 **Projet M2 DSIA — MLOps**
-**Auteurs :** Rokhaya Dieng, [Nom du/de la binôme]
+**Auteurs :** Rokhaya Dieng, Ousmane Faye
 **Dépôt :** https://github.com/ousmanegithub/Senegal-Rental-Price
 **Date :** 4 août 2026
 
