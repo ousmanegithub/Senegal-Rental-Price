@@ -175,8 +175,12 @@ streamlit run frontend/app.py     # puis ouvrir http://localhost:8501
 ```
 
 L'URL de l'API est configurable via la variable d'environnement `API_URL`
-(défaut : `http://localhost:8000`). La sidebar de l'application indique si
+(défaut : `http://localhost:8000`). Le bandeau en haut de page indique si
 l'API est joignable et si un modèle est chargé.
+
+> Streamlit envoie par défaut des statistiques d'usage anonymes. Pour les
+> désactiver : `STREAMLIT_BROWSER_GATHER_USAGE_STATS=false streamlit run
+> frontend/app.py` (déjà fait automatiquement dans l'image Docker).
 
 ## 6. Conteneurisation Docker
 
